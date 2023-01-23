@@ -42,12 +42,11 @@ def run_tests():
     test("TestCodePointOne", f"pushp 84 show exit\n", "T\n")
     test("TestCodePointTwo", f"pushp 1048 show exit\n", "И\n")
     test("TestCodePointThree", f"pushp 12473 show exit\n", "ス\n")
-
+    test("TestCodePointFour", f"pushp 129302 show exit\n", "🤖\n")
     test("TestOneByte", f"pushb 1 {0x47} show exit\n", "G\n")
     test("TestTwoBytes", f"pushb 2 {0xd0} {0x96} show exit\n", "Ж\n")
     test("TestThreeBytes", f"pushb 3 {0xe3} {0x83} {0x9f} show exit\n", "ミ\n")
-
-
+    test("TestFourBytes", f"pushb 4 {0xf0} {0x9f} {0xa4} {0x96} show exit\n", "🤖\n")
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", dest="path", required=True, type=str)

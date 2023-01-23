@@ -87,6 +87,15 @@ TEST(TestUString, CodePointThreeBytes) {
     ustr.push_back(12391);
     ASSERT_EQ(ustr, "私は誰で");
 }
+TEST(TestUString, CodePointFourBytes)
+{
+UString ustr;
+ustr.push_back(129302);
+ustr.push_back(128077);
+ustr.push_back(128512);
+ustr.push_back(128164);
+ASSERT_EQ(ustr, "🤖👍😀💤");
+}
 
 TEST(TestUString, IsWellOneByte) {
     std::array<unsigned char, 2> bytes1 = { 0x77, 0x00 };
@@ -143,6 +152,28 @@ TEST(TestUString, IsWellThreeBytes) {
             FAIL() << "Expected std::invalid_argument";
         }
     }
+}
+TEST(TestUString, IsWellFourBytes)
+{
+std::array<unsigned char, 5> bytes1 = { 0xf0, 0x9f, 0x98, 0x83, 0x00 };
+UString ustr = reinterpret_cast<char*>(bytes1.data());
+ASSERT_EQ(ustr, "😃");
+
+std::array<unsigned char, 5> bytes2 = { 0b11111000, 0x9f, 0x98, 0x83, 0x00 };
+std::array<unsigned char, 5> bytes3 = { 0xf0, 0xFF, 0x98, 0x83, 0x00 };
+std::array<unsigned char, 5> bytes4 = { 0xf0, 0x9f, 0xFF, 0x83, 0x00 };
+std::array<unsigned char, 5> bytes5 = { 0xf0, 0x9f, 0x98, 0xFF, 0x00 };
+auto cases = std::array<std::array<unsigned char, 5>, 4>{ bytes2, bytes3, bytes4, bytes5 };
+for (int i = 0; i < 4; ++i) {
+try {
+UString ustr = reinterpret_cast<char*>(cases[i].data());
+FAIL() << "Expected std::invalid_argument";
+} catch(std::invalid_argument const& err) {
+EXPECT_EQ(err.what(), std::string("invalid UTF-8 string"));
+} catch(...) {
+FAIL() << "Expected std::invalid_argument";
+}
+}
 }
 
 TEST(TestUString, PushPop) {

@@ -180,7 +180,7 @@ bool UString::is_well() const {
     auto it = bytes.cbegin();
     auto end = bytes.cend(); 
     while (it != end) {
-        if ((0xF8 & *it) == 0xF1 && *it <= 0xF4) {
+        if ((0xF8 & *it) == 0xF0 && *it <= 0xF4) {
             if (it + 1 == end || it + 2 == end || it + 3 == end) {
                 return false;
             }
@@ -393,7 +393,7 @@ std::string UString::codepoint_to_string(unsigned int code) {
         bytes[1] = ((code >> 6) & 0b111111) + 0b10000000;
         bytes[2] = (code & 0b111111) + 0b10000000;
     } else if (code <= 0x10FFFF) {
-        bytes[0] = (code >> 18) + 0b11111000;
+        bytes[0] = (code >> 18) + 0b11110000;
         bytes[1] = ((code >> 12) & 0b111111) + 0b10000000;
         bytes[2] = ((code >> 6) & 0b111111) + 0b10000000;
         bytes[3] = (code & 0b111111) + 0b10000000;

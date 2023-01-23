@@ -196,7 +196,7 @@ TEST(TestUString, InvalidString) {
 TEST(TestUString, IteratorForward) {
     std::array<std::string, 8> symbs = {"パ", "K", "ス", "ю", "ミ", "E", "イ", "щ"};
     std::string str = "";
-    for (const auto symb: symbs) {
+    for (const auto& symb: symbs) {
         str += symb;
     }
     UString ustr = str;
@@ -213,7 +213,7 @@ TEST(TestUString, IteratorForward) {
 TEST(TestUString, IteratorReverse) {
     std::array<std::string, 8> symbs = {"パ", "K", "ス", "ю", "ミ", "E", "イ", "щ"};
     std::string str = "";
-    for (const auto symb: symbs) {
+    for (const auto& symb: symbs) {
         str += symb;
     }
     UString ustr = str;

@@ -87,13 +87,14 @@ TEST(TestUString, CodePointThreeBytes) {
     ustr.push_back(12391);
     ASSERT_EQ(ustr, "私は誰で");
 }
+
 TEST(TestUString, CodePointFourBytes){
-UString ustr;
-ustr.push_back(129302);
-ustr.push_back(128077);
-ustr.push_back(128512);
-ustr.push_back(128164);
-ASSERT_EQ(ustr, "🤖👍😀💤");
+    UString ustr;
+    ustr.push_back(129302);
+    ustr.push_back(128077);
+    ustr.push_back(128512);
+    ustr.push_back(128164);
+    ASSERT_EQ(ustr, "🤖👍😀💤");
 }
 
 TEST(TestUString, IsWellOneByte) {
@@ -152,6 +153,7 @@ TEST(TestUString, IsWellThreeBytes) {
         }
     }
 }
+
 TEST(TestUString, IsWellFourBytes) {
     std::array<unsigned char, 5> bytes1 = { 0xf0, 0x9f, 0x98, 0x83, 0x00 };
     UString ustr = reinterpret_cast<char*>(bytes1.data());

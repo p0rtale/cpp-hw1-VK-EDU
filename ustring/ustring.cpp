@@ -23,7 +23,7 @@ UString::iterator::reference UString::iterator::operator*() const {
     if (m_idx >= m_length) {
         throw std::out_of_range("index value is greater than the length of the string");
     }
-    auto pos = get_codepoint_pos(m_idx, m_ustring);
+    size_t pos = get_codepoint_pos(m_idx, m_ustring);
     return m_ustring.substr(pos, get_codepoint_len(pos, m_ustring));
 }
 
@@ -118,7 +118,7 @@ UString& UString::operator=(const char* str) {
 }
 
 UString& UString::operator=(const std::string& str) {
-    auto old = m_ustring;
+    ustring_t old = m_ustring;
     m_ustring = str;
     if (!is_well()) {
         m_ustring = old;
@@ -141,7 +141,7 @@ UString& UString::operator=(UString&& other) noexcept {
 }
 
 UString& UString::operator+=(const std::string& str) {
-    auto old = m_ustring;
+    ustring_t old = m_ustring;
     m_ustring += str;
     if (!is_well()) {
         m_ustring = old;
@@ -252,12 +252,12 @@ UString::uchar UString::at(size_t index) const {
     if (index >= m_length) {
         throw std::out_of_range("index value is greater than the length of the string");
     }
-    auto pos = get_codepoint_pos(index);
+    size_t pos = get_codepoint_pos(index);
     return m_ustring.substr(pos, get_codepoint_len(pos));
 }
 
 UString::uchar UString::operator[](size_t index) const {
-    auto pos = get_codepoint_pos(index);
+    size_t pos = get_codepoint_pos(index);
     return m_ustring.substr(pos, get_codepoint_len(pos));
 }
 
@@ -275,7 +275,7 @@ void UString::pop_back() {
         throw std::length_error("cannot remove the last element from an empty string");
     }
 
-    auto pos = get_codepoint_pos(m_length - 1);
+    size_t pos = get_codepoint_pos(m_length - 1);
     m_ustring.erase(pos);
     --m_length;
 }
@@ -387,7 +387,7 @@ std::string UString::codepoint_to_string(unsigned int code) {
     } else if (code <= 0x7FF) {
         bytes[0] = (code >> 6) + 0b11000000;
         bytes[1] = (code & 0b111111) + 0b10000000;
-    } // else if (0xd800 <= code && code <= 0xdfff) {}
+    }
     else if (code <= 0xFFFF) {
         bytes[0] = (code >> 12) + 0b11100000;
         bytes[1] = ((code >> 6) & 0b111111) + 0b10000000;
